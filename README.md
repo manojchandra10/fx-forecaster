@@ -101,7 +101,7 @@ User → Django View → Data Fetch (European Central Bank)
 ## Repository Structure (Public Version)
 
 ```
-fx_project/
+fx-forecaster/
 ├── .gitignore             
 ├── README.md              
 ├── requirements.txt        # List of Python packages
