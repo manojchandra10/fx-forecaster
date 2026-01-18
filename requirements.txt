@@ -1,0 +1,10 @@
+pandas
+requests
+python-dotenv
+matplotlib
+numpy<2.0
+scikit-learn
+joblib
+tensorflow
+django
+plotly

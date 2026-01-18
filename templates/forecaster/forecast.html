@@ -1,0 +1,107 @@
+{% extends 'forecaster/base.html' %} {# Inherit base structure and styles #}
+
+{% block main_title %}FX Forecaster{% endblock %} {# Set the main centered title #}
+{% block title %}Live Training FX Forecast{% endblock %} {# Set the browser tab title #}
+
+{% block content %}
+    <h2>Live Training Forecast</h2>
+    <!-- <p>Select currencies below. A new model will be trained using the latest data (this takes 2-5 minutes).</p> -->
+    <p>A new model will be trained using the latest data (this takes 2-5 minutes).</p>
+    {# --- FORM CONTAINER (Two Columns) --- #}
+    <div class="form-container">
+
+        {# --- LEFT COLUMN (Inputs & Button) --- #}
+        <div class="form-left">
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="from_currency">From Currency:</label>
+                    <select name="from_currency" id="from_currency">
+                        {% for currency in currencies %}
+                            <option value="{{ currency }}" {% if currency == from_currency %}selected{% endif %}>
+                                {{ currency }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="to_currency">To Currency:</label>
+                    <select name="to_currency" id="to_currency">
+                        {% for currency in currencies %}
+                            <option value="{{ currency }}" {% if currency == to_currency %}selected{% endif %}>
+                                {{ currency }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-button">Generate Live Forecast</button>
+            </form>
+        </div> {# --- End Left Column --- #}
+
+        {# --- RIGHT COLUMN (Switch Box) --- #}
+        <div class="form-right">
+            <div class="switch-box">
+                <p>Want faster results using pre-trained models?</p>
+                <a href="{% url 'forecaster:instant_forecast_page' %}" class="switch-button instant">⚡ Go to Instant FX Forecast</a>
+            </div>
+        </div> {# --- End Right Column --- #}
+
+    </div> {# --- End Form Container --- #}
+
+
+    {# --- Display Error Messages (if any) --- #}
+    {% if error_message %}
+        <div class="error">
+            <strong>Error:</strong> {{ error_message }}
+        </div>
+    {% endif %}
+
+    {# --- Display Execution Time (if available) --- #}
+    {% if execution_time %}
+        <p style="font-style: italic; color: #555;">Live forecast generated in {{ execution_time }} seconds.</p>
+    {% endif %}
+
+    {# --- Display Results Section --- #}
+    {% if forecast_data is not None %}
+        <div class="results">
+            <!-- <h2>30-Day Forecast for {{ from_currency }}/{{ to_currency }} (Live Trained Model)</h2> -->
+            <h2>30-Day Exchange Rate Forecast for {{ from_currency }}/{{ to_currency }}</h2>
+            {% if chart_html %}
+                <div class="chart">
+                    <p>Displaying interactive forecast chart:</p>
+                    {{ chart_html|safe }}
+                </div>
+            {% else %}
+                <p class="error">Could not generate chart.</p>
+            {% endif %}
+            <!-- <h2>Forecast Data</h2> -->
+            <h2>Estimated Future Exchange Rates</h2>
+            <table>
+                <thead>
+                    <tr><th>Date</th><th>Forecasted Rate</th></tr>
+                </thead>
+                <tbody>
+                    {% for date, row in forecast_data.iterrows %}
+                    <tr>
+                        <td>{{ date|date:"Y-m-d" }}</td>
+                        <td>{{ row.Forecast|floatformat:5 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% elif request.method == 'POST' and not error_message %}
+         <p>Processing forecast... please wait. Live training may take several minutes.</p>
+    {% elif request.method == 'GET' %}
+        <p style="margin-top: 20px;">Please select currencies and click 'Generate Live Forecast'.</p>
+        <p class="timeout-warning">
+            Note: The first request may take 2-3 minutes to initialize the model.
+            If the page times out, please try again or use the 
+            <a href="{% url 'forecaster:instant_forecast_page' %}">Instant FX Forecast</a> option.
+        </p>
+    {% endif %}
+
+{% endblock %}

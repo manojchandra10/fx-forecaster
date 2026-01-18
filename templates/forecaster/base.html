@@ -1,0 +1,224 @@
+<style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; 
+            color: #212529; 
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 960px; 
+            margin: 40px auto;
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 30px;
+            border-bottom: none; 
+        }
+        h2 { 
+            font-size: 1.75em;
+            color: #343a40;
+            border-bottom: 1px solid #dee2e6; 
+            padding-bottom: 10px;
+            margin-top: 0; 
+            margin-bottom: 15px;
+        }
+        p { margin-bottom: 15px; color: #495057; }
+
+        /* Two-Column Form Layout */
+        .form-container {
+            display: flex;
+            gap: 40px; 
+            margin-top: 25px;
+            align-items: center; 
+            flex-wrap: wrap; 
+        }
+        .form-left {
+            flex: 1; 
+            min-width: 300px; 
+        }
+        .form-right {
+            flex: 1;
+            min-width: 300px;
+        }
+        /* End Two-Column Layout */
+
+        .form-group { margin-bottom: 20px; } 
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #495057;
+        }
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            box-sizing: border-box;
+            height: 46px; 
+            background-color: #fff;
+            font-size: 1em;
+        }
+
+        /* Submit Button Styl */
+        .submit-button { 
+            padding: 12px 25px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            display: inline-block; 
+            margin-top: 10px; 
+        }
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Shaded Box for Switching Pages */
+        .switch-box {
+            background-color: #f8f9fa; 
+            border: 1px solid #dee2e6; 
+            border-radius: 6px;
+            padding: 25px;
+            text-align: center;
+        }
+        .switch-box p { margin-bottom: 15px; color: #495057; }
+        .switch-button { 
+            display: inline-block;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            font-size: 1em;
+        }
+        .switch-button.instant { 
+            background-color: #FF0000;
+        }
+        .switch-button.instant:hover {
+            background-color: #e30202;
+        }
+         .switch-button.live { 
+            background-color: #ffc107;
+             color: #212529; 
+        }
+        .switch-button.live:hover {
+            background-color: #e0a800;
+        }
+
+
+        /* Results Area Styles */
+        .results { margin-top: 40px; }
+        .results h2 { border-top: 1px solid #dee2e6; padding-top: 25px;} 
+        .results .chart { margin-top: 15px; }
+        .results .chart p {font-weight: bold;}
+        .results .chart div { /* Target Plotly div */
+             border: 1px solid #dee2e6;
+             border-radius: 4px;
+        }
+        .results table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.95em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .results th, .results td {
+            border: 1px solid #dee2e6;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        .results th {
+            background-color: #e9ecef;
+            font-weight: 600;
+            color: #495057;
+        }
+        .results tr:nth-child(even) { background-color: #f8f9fa; }
+
+        .error, .messages li.error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 12px 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .timeout-warning {
+            /* font-weight: 500; */
+            font-size: 0.95em;
+            /* text-align: center; */
+            margin-top: -5px;
+            margin-bottom: 25px;
+            color: #dc3545; 
+        }
+        .timeout-warning a { 
+            color: inherit;
+            text-decoration: none;
+            /* font-weight: 600; */
+        }
+        .timeout-warning a:hover {
+            /* text-decoration: underline; */
+            font-weight: 600;
+        }
+        .messages {
+            list-style: none; padding: 0;
+        }
+        .messages li.success {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+             padding: 12px 15px;
+             border-radius: 5px;
+             margin: 15px 0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Title (Centred) -->
+        <h1>{% block main_title %}FX Forecaster{% endblock %}</h1>
+
+        <!-- Django messages framework display area -->
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Content from child templates will go here -->
+        {% block content %}
+        {% endblock %}
+
+        <footer>
+            <!-- <p>FX Forecaster App - Manoj Chandra - Built with Django & LSTM</p> -->
+            <!-- <p>FX Forecaster App ©  Manoj Chandra <a href="https://youtu.be/cORbt_NL4zs?si=7OJVPaLxmNyr_CdJ" target="_blank"><i class="fa-sharp fa-solid fa-heart" style="color: black;" alt="Heart Icon" class="heart-icon"></i></a></p> -->
+            <p>FX Forecaster App ©  <a href="https://manojchandra.co.uk/" target="_blank" style="text-decoration: none; color: inherit;">Manoj Chandra</a></p>
+        </footer>
+    </div>
+    <script src="https://kit.fontawesome.com/c9b477e2fd.js" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+.env
+sample_env.txt.bak
+db.sqlite3
+staticfiles/
+media/
+__pycache__/
+*.py[cod]
+models/*.h5
+models/*.joblib
+.ipynb_checkpoints/
+venv/
+.venv/
+env/
+.DS_Store
+.vscode/
+.idea/
